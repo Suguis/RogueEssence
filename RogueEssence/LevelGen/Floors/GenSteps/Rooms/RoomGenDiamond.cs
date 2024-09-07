@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using RogueElements;
 
 namespace RogueEssence.LevelGen
@@ -19,12 +20,14 @@ namespace RogueEssence.LevelGen
         {
             this.Width = width;
             this.Height = height;
+            this.openLocs = new List<Loc>();
         }
 
         protected RoomGenDiamond(RoomGenDiamond<T> other)
         {
             this.Width = other.Width;
             this.Height = other.Height;
+            this.openLocs = new List<Loc>();
         }
 
         /// <summary>
@@ -36,6 +39,8 @@ namespace RogueEssence.LevelGen
         /// Height of the room.
         /// </summary>
         public RandRange Height { get; set; }
+
+        public List<Loc> openLocs { get; set; }
 
         public override RoomGen<T> Copy() => new RoomGenDiamond<T>(this);
 
@@ -53,7 +58,10 @@ namespace RogueEssence.LevelGen
                 for (int jj = 0; jj < this.Draw.Height; jj++)
                 {
                     if (IsTileWithinRoom(ii, jj, diameter, this.Draw.Size))
+                    {
+                        openLocs.Add(new Loc(this.Draw.X + ii, this.Draw.Y + jj));
                         map.SetTile(new Loc(this.Draw.X + ii, this.Draw.Y + jj), map.RoomTerrain.Copy());
+                    }
                 }
             }
 
@@ -87,6 +95,8 @@ namespace RogueEssence.LevelGen
                 }
             }
         }
+
+        public override bool IsLocInsideOpenedRoom(Loc loc) => openLocs.Contains(loc);
 
         private static bool IsTileWithinRoom(int baseX, int baseY, int diameter, Loc size)
         {

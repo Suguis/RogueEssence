@@ -1,6 +1,6 @@
 [submodule "RogueElements"]
 	path = RogueElements
-	url = https://github.com/audinowho/RogueElements.git
+	url = https://github.com/Suguis/RogueElements.git
 [submodule "FNA"]
 	path = FNA
 	url = https://github.com/audinowho/FNA.git
